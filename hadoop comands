@@ -1,0 +1,6 @@
+hadoop dfs -df -h maprfs:/app/hdpcsclib/HIVE/WAREHOUSE/csclibrary.db
+The df –h command shows that this cluster’s currently configured HDFS storage
+---------------------------------------------------------------------------------------
+hadoop dfs -du -h maprfs:/app/hdpcsclib/HIVE/WAREHOUSE/csclibrary.db
+The command will show you the space (in bytes) used by the files that match the file pattern you specify
+----------------------------------------------------------------------------------------------------------

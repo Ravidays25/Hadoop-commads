@@ -4,3 +4,39 @@ The df –h command shows that this cluster’s currently configured HDFS storag
 hadoop dfs -du -h maprfs:/app/hdpcsclib/HIVE/WAREHOUSE/csclibrary.db
 The command will show you the space (in bytes) used by the files that match the file pattern you specify
 ----------------------------------------------------------------------------------------------------------
+
+Connecting to Hive using SparkR 2.2.1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+https://wwwin-github.cisco.com/datalab-gen/AI_Platform_Test_Cases/blob/master/RStudio/Spark/SparkR_Example.R
+
+if (nchar(Sys.getenv("SPARK_HOME")) < 1) {
+    Sys.setenv(SPARK_HOME = "/opt/mapr/spark/spark-2.2.1")
+}
+library(SparkR, lib.loc = c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib")))
+sparkR.session(master = "yarn", sparkConfig = list(spark.driver.memory = "2g"), enableHiveSupport=TRUE)
+
+collect(sql("select count(*) from database.table"))
+
+
+Connecting to Hive using Spark (Scala) 2.2.1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import org.apache.spark.sql.Row
+import org.apache.spark.sql.SparkSession
+
+// warehouseLocation points to the default location for managed databases and tables
+val warehouseLocation = "spark-warehouse"
+
+val spark = SparkSession
+   .builder()
+   .appName("Spark Hive Example")
+   .config("spark.sql.warehouse.dir", warehouseLocation)
+   .enableHiveSupport()
+   .getOrCreate()
+
+import spark.implicits.
+import spark.sql
+
+// Queries are expressed in HiveQL
+sql("SELECT count(*) FROM database.table").show()
+
+-------------------------------------------------------------------------------------------------------
